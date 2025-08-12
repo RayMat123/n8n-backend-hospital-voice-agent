@@ -5,43 +5,17 @@ const app = express();
 app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Parse JSON body automatically
 
-const fs = require('fs');
-const dataFilePath = '/app/data/patients.json';
-
-// Example: Save data received from n8n
+// POST endpoint to receive data from n8n
 app.post('/receive', (req, res) => {
-  const jsonData = JSON.stringify(req.body, null, 2);
-  fs.writeFile(dataFilePath, jsonData, (err) => {
-    if (err) {
-      console.error('Error writing data:', err);
-      return res.status(500).json({ error: 'Failed to save data' });
-    }
-    res.json({ status: 'success' });
-  });
+  console.log('Received JSON from n8n:', req.body);
+  // Here you can process or store the data
+  res.json({ status: 'success', received: req.body });
 });
-
 
 // Simple GET endpoint to verify server is running
 app.get('/', (req, res) => {
   res.send('Backend is running');
 });
-
-app.get('/data', (req, res) => {
-  fs.readFile(dataFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading data:', err);
-      return res.status(500).json({ error: 'Failed to read data' });
-    }
-    try {
-      const jsonData = JSON.parse(data);
-      res.json(jsonData);
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-      res.status(500).json({ error: 'Invalid JSON data' });
-    }
-  });
-});
-
 
 // Start server on port 3000 (or use PORT env var)
 const PORT = process.env.PORT || 3000;
