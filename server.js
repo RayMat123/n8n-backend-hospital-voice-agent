@@ -26,6 +26,23 @@ app.get('/', (req, res) => {
   res.send('Backend is running');
 });
 
+app.get('/data', (req, res) => {
+  fs.readFile(dataFilePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading data:', err);
+      return res.status(500).json({ error: 'Failed to read data' });
+    }
+    try {
+      const jsonData = JSON.parse(data);
+      res.json(jsonData);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      res.status(500).json({ error: 'Invalid JSON data' });
+    }
+  });
+});
+
+
 // Start server on port 3000 (or use PORT env var)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
