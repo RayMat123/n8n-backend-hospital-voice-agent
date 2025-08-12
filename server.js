@@ -5,12 +5,21 @@ const app = express();
 app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Parse JSON body automatically
 
-// POST endpoint to receive data from n8n
+const fs = require('fs');
+const dataFilePath = '/app/data/patients.json';
+
+// Example: Save data received from n8n
 app.post('/receive', (req, res) => {
-  console.log('Received JSON from n8n:', req.body);
-  // Here you can process or store the data
-  res.json({ status: 'success', received: req.body });
+  const jsonData = JSON.stringify(req.body, null, 2);
+  fs.writeFile(dataFilePath, jsonData, (err) => {
+    if (err) {
+      console.error('Error writing data:', err);
+      return res.status(500).json({ error: 'Failed to save data' });
+    }
+    res.json({ status: 'success' });
+  });
 });
+
 
 // Simple GET endpoint to verify server is running
 app.get('/', (req, res) => {
