@@ -63,7 +63,7 @@ app.get('/files', async (req, res) => {
 
 
 // GET endpoint to get JSON data from a file
-app.get('/app/data', async (req, res) => {
+app.get('/patients', async (req, res) => {
   try {
     // IMPORTANT: Replace 'your-data-file.json' with the actual filename
     const filePath = '/app/data/patients.json';
