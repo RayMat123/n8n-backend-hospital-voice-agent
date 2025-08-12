@@ -66,7 +66,7 @@ app.get('/files', async (req, res) => {
 app.get('/data', async (req, res) => {
   try {
     // IMPORTANT: Replace 'your-data-file.json' with the actual filename
-    const filePath = '/app/data/your-data-file.json'; 
+    const filePath = '/app/data'; 
     const fileContent = await fs.readFile(filePath, 'utf-8');
     const jsonData = JSON.parse(fileContent);
     res.json(jsonData);
@@ -81,7 +81,7 @@ app.get('/data', async (req, res) => {
 });
 
 // Start server on port 3000 (or use PORT env var)
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
